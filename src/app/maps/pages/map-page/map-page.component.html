@@ -1,1 +1,5 @@
-<p>map-page works!</p>
+@if (isUserLocationReady) {
+  <maps-map-view></maps-map-view>
+} @else {
+  <maps-loading></maps-loading>
+}
