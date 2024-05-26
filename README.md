@@ -23,3 +23,22 @@ npm run build
 ```
 
 Note: Do not run the application directly with AngularCLI (unless the environment variables are created), since the environment variables are created based on the .env.
+
+## Technologies
+
+- HTML5
+- CSS3
+- JavaScript
+- Angular
+- Tailwind CSS
+- Mapbox: Map library used for map visualization and manipulation.
+
+## Screenshot
+
+### Route on the map
+![](./src/assets/route-on-the-map.png)
+
+## Links
+
+- Solution URL: [Solution URL here](https://github.com/derianrddev/route-finder)
+- Live Site URL: [Live site URL here](https://derianrddev.github.io/route-finder/)
