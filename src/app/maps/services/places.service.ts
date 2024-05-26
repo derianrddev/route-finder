@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
 
+import { Feature, PlacesResponse } from '../interfaces/places.interface';
+import { MapService } from './map.service';
+import { PlacesApiClient } from '../api';
+
 @Injectable({
   providedIn: 'root'
 })
 export class PlacesService {
   public userLocation?: [number, number];
+  public isLoadingPlaces: boolean = false;
+  public places: Feature[] = [];
 
-  constructor() {
+  constructor(
+    private placesApi: PlacesApiClient,
+    private mapService: MapService
+  ) {
     this.getUserLocation();
   }
 
@@ -29,4 +38,29 @@ export class PlacesService {
       );
     });
   }
+
+  getPlacesByQuery( query: string = '' ) {
+    if ( query.length === 0 ) {
+      this.isLoadingPlaces = false;
+      this.places = [];
+      return;
+    }
+
+    if ( !this.userLocation ) throw Error('No user localization');
+
+    this.isLoadingPlaces = true;
+
+    this.placesApi.get<PlacesResponse>(`/${ query }.json`, {
+      params: {
+        proximity: this.userLocation.join(',')
+      }
+    })
+      .subscribe( response => {
+        this.isLoadingPlaces = false;
+        this.places = response.features;
+
+        this.mapService.createMarkersFromPlaces( this.places, this.userLocation! );
+      });
+  }
+
 }
