@@ -10,7 +10,7 @@ import { PlacesApiClient } from '../api';
 export class PlacesService {
   public userLocation?: [number, number];
   public isLoadingPlaces: boolean = false;
-  public places: Feature[] = [];
+  public places: Feature[] | undefined = undefined;
 
   constructor(
     private placesApi: PlacesApiClient,
@@ -39,7 +39,7 @@ export class PlacesService {
     });
   }
 
-  getPlacesByQuery( query: string = '' ) {
+  getPlacesByQuery( query: string = '' ): void {
     if ( query.length === 0 ) {
       this.isLoadingPlaces = false;
       this.places = [];

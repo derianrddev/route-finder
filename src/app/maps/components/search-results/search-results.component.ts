@@ -9,6 +9,7 @@ import { Feature } from '../../interfaces/places.interface';
 })
 export class SearchResultsComponent {
   public selectedId: string = '';
+  public showResults: boolean = true;
 
   constructor(
     private placesService: PlacesService,
@@ -19,8 +20,12 @@ export class SearchResultsComponent {
     return this.placesService.isLoadingPlaces;
   }
 
-  get places(): Feature[] {
+  get places(): Feature[] | undefined {
     return this.placesService.places;
+  }
+
+  toggleResultsVisibility(): void {
+    this.showResults = !this.showResults;
   }
 
   flyTo( place: Feature ) {
@@ -28,5 +33,14 @@ export class SearchResultsComponent {
 
     const [ lng, lat ] = place.center;
     this.mapService.flyTo([ lng, lat ]);
+  }
+
+  getDirections( place: Feature ) {
+    if ( !this.placesService.userLocation ) throw Error('No user location');
+
+    const start = this.placesService.userLocation;
+    const end = place.center as [number, number];
+
+    this.mapService.getRouteBetweenPoints(start, end);
   }
 }
